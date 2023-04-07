@@ -20,58 +20,66 @@
  * 
  */
 
-int pot;
+int pot =0;
 int prev = 0;
-int limitCheck;
-int audioSignal;
+int limitCheck = 0;
+int audioSignal = 0;
+int audioDiff = 0;
+
 
 int main(void) {
     BOARD_Init();
     AD_Init();
     AD_AddPins(AD_A0);
     ButtonsInit();
-    
     ToneGeneration_Init();
-    ToneGeneration_SetFrequency(TONE_196);
-    ToneGeneration_ToneOn();
+   // ToneGeneration_ToneOn(); // mabe in loop 
+    //ToneGeneration_SetFrequency(TONE_196);
+    //ToneGeneration_ToneOn();
     // tone pwm pin is J2-03
 
     while (1) {
+        
         pot = AD_ReadADPin(AD_A0);
         
-        //gonna ignore minor pot changes and only  update if pot change is greater than 50
-        limitCheck = abs(prev - pot);
-        
-        if(limitCheck > 50 ){
-            audioSignal = pot;
+        if(abs(prev-pot) < 30){ // hystersis , 50 might be too big, maybe 10? 
+            pot = prev;
         }else{
-            audioSignal=prev;
-             prev = pot;
-        
-       //  audioSignal = audioSignal * audioSignal; // bad
-        audioSignal = (audioSignal * audioSignal) / 2 ;  // better 
-        
-        if(BTN1){
-            audioSignal = audioSignal + TONE_196;
-        }
-          if(BTN2){
-            audioSignal = audioSignal + TONE_293;
-        }
-          if(BTN3){
-            audioSignal = audioSignal + TONE_440;
-        }
-          if(BTN4){
-            audioSignal = audioSignal + TONE_659;
+            prev=pot;
         }
         
+       pot = pot /2; // scale to 5V to match supply
         
+        if (BTN1) {
+            audioSignal = TONE_196 + pot;
+        }
+        if (BTN2) {
+            audioSignal = TONE_293 + pot;
+        }
+        if (BTN3) {
+            audioSignal = TONE_440 + pot;
+        }
+        if (BTN4) {
+            audioSignal = TONE_659 + pot;
+        }
+        if(audioSignal == 0){ // may need more explicity conditional 
+            ToneGeneration_ToneOff();
+        }
+        if(audioSignal > 1000){
+            audioSignal = 1000;
+        }
+        if(audioSignal != 0){
+        ToneGeneration_ToneOn();
+        audioSignal = audioSignal;
         ToneGeneration_SetFrequency(audioSignal);
         }
-      
-        // low pas filter specs - 0.1uF and 330ohm
+        audioSignal = 0; // reset audio signal
+        
     }
+    // low pas filter specs - 0.1uF and 330ohm
 
-    
+
+
 
     BOARD_End();
     while (1);
