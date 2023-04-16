@@ -33,7 +33,7 @@ int main(void) {
     AD_Init();
     //SERIAL_Init();
     ToneGeneration_Init();
-    ToneGeneration_SetFrequency(TONE_196);
+    ToneGeneration_SetFrequency(TONE_440);
     AD_AddPins(AD_A2);
      timer = 0; // settin init val 
     
@@ -41,7 +41,7 @@ int main(void) {
         for(int i = 0; i < 100; i++) { // delay  
            i++ ; 
         }
-        piezoInput = AD_ReadADPin(AD_A2); // read in flex 
+        piezoInput = AD_ReadADPin(AD_A2); // read in piezo
         
         // this come from peizo sensor guide but NOT needed for this application, it does work tho
         // peizoInput = peizoInput / 1023; // normalizing flex ADC reading 

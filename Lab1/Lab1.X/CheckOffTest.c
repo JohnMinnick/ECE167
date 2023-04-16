@@ -18,17 +18,18 @@
  * 
  */
 #define PIEZOLIMIT 100
-#define NOISELIMIT 20
+#define NOISELIMIT 15
+#define TRIGGERTIME 150
 
 
-double tempDouble1, tempDouble2;
+//double tempDouble1, tempDouble2;
 int tempInt1, tempInt2;
 
 int flexInput;
-double flexRegressed;
+int flexRegressed;
 int flexPrev;
-
-
+int piezoInput;
+int timer;
 
 int main(void) {
     // inits and other stuff that should only occur once per run
@@ -38,37 +39,56 @@ int main(void) {
     //SERIAL_Init();
     ToneGeneration_Init();
     AD_AddPins(AD_A1);
-    ToneGeneration_ToneOn();
+    AD_AddPins(AD_A2);
+    //ToneGeneration_ToneOn();
     flexPrev = 0; // settin init val 
-    
-    while(1){ // primary while(1) loop that running code should exist inside
-        for(int i = 0; i < 200; i++) { 
-           i++ ; 
+
+    while (1) { // primary while(1) loop that running code should exist inside
+        for (int i = 0; i < 18300; i++) { // delay  
+            i++;
         }
         flexInput = AD_ReadADPin(AD_A1); // read in flex 
-        
-        if(abs(flexInput - flexPrev) < NOISELIMIT){ // hystersis filter from lab 0
+
+        if (abs(flexInput - flexPrev) < NOISELIMIT) { // hystersis filter from lab 0
             flexInput = flexPrev;
-        }else{
+        } else {
             flexPrev = flexInput;
         }
-        flexInput = flexInput / 1023; // normalizing flex ADC reading 
-        flexInput = flexInput * 3.3; // map normalized adc reading to 3.3V 
-        flexInput =  -40.0 * (flexInput * flexInput ) + (55.8 * flexInput) + 70.1; // map 3.3v to degrees
-        flexInput = (1000/90) * flexInput; // map degrees to frequency 
-        
-        if(flexInput < 1){
-            flexInput =0;
+        // this DSP is dependent on the resistor value used within the voltage divider for the flex 
+        // flexInput = flexInput / 1023; // normalizing flex ADC reading 
+        // flexInput = flexInput * 3.3; // map normalized adc reading to 3.3V 
+        // flexInput =  -40.0 * (flexInput * flexInput ) + (55.8 * flexInput) + 70.1; // map 3.3v to degrees
+        //  flexInput = (1000/90) * flexInput; // map degrees to frequency 
+        flexInput = (-flexInput + 660) * 4;
+        if (flexInput < 1) {
+            flexInput = 0;
         }
-        
+        if(flexInput > 1022){
+            flexInput = 1022;
+        }
+
         //tempInt1 = flexInput;
-        printf("%d \n",flexInput);
-       // printf("hello world \n");
+        //printf("%d \n",flexInput);
+        // printf("hello world \n");
         //printf("%f \n",flexInput);
+        //printf("%d \n", flexInput);
         ToneGeneration_SetFrequency(flexInput);
-       
+        
+        piezoInput = AD_ReadADPin(AD_A2); // read in piezo
+        
+        // this come from peizo sensor guide but NOT needed for this application, it does work tho
+        // peizoInput = peizoInput / 1023; // normalizing flex ADC reading 
+        // peizoInput = peizoInput * 3.3; // map normalized adc reading to 3.3V 
+        if(PIEZOLIMIT < piezoInput){ // piezo limit check
+            ToneGeneration_ToneOn(); // turn on tone
+            timer = 0; // reset timer while over trigger limit
+        }else if(TRIGGERTIME < timer){ // continue playing for TRIGGERTIME while above limit
+            ToneGeneration_ToneOff(); // turn off tone
+        }
+        timer++; // timer increment
+
     }
-    
+
     BOARD_End(); // board end for redundancy 
 }
 
