@@ -3,8 +3,8 @@
     <type>com.microchip.mplab.nbide.embedded.makeproject</type>
     <configuration>
         <data xmlns="http://www.netbeans.org/ns/make-project/1">
-            <name>QEI</name>
-            <creation-uuid>99226d81-12a9-420d-9c90-97bdda3905d9</creation-uuid>
+            <name>PING</name>
+            <creation-uuid>0a45e373-97cd-4b85-8f34-7af0b9d1ea18</creation-uuid>
             <make-project-type>0</make-project-type>
             <c-extensions>c</c-extensions>
             <cpp-extensions/>
