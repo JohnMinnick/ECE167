@@ -10,6 +10,7 @@
       <itemPath>../../Common/pwm.h</itemPath>
       <itemPath>../../Common/serial.h</itemPath>
       <itemPath>../../Common/timers.h</itemPath>
+      <itemPath>../../Common/ToneGeneration.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -25,6 +26,7 @@
       <itemPath>../../Common/timers.c</itemPath>
       <itemPath>PING.c</itemPath>
       <itemPath>pingMain.c</itemPath>
+      <itemPath>../../Common/ToneGeneration.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -250,6 +252,7 @@
         <property key="UART1" value="true"/>
         <property key="UART2" value="true"/>
         <property key="debugoptions.useswbreakpoints" value="false"/>
+        <property key="firmware.download.all" value="false"/>
         <property key="hwtoolclock.frcindebug" value="false"/>
         <property key="memories.aux" value="false"/>
         <property key="memories.bootflash" value="true"/>

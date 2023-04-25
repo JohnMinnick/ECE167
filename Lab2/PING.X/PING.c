@@ -24,6 +24,13 @@
 //#define SYSTEM_CLOCK 80000000L -> need this for calcs
 //#define  PB_CLOCK SYSTEM_CLOCK/2 -> and this 
 
+
+//model mapping notes
+// mapping adc reading to centimeters
+// slope is 0.0161 with 0.041 residual
+// (ADC Reading) * (0.0161) = centimeters
+
+
 //defines
 #define CALL PORTDbits.RD11
 #define CALL_CONFIG TRISDbits.TRISD11
@@ -31,6 +38,8 @@
 #define RESPONSE_CONFIG TRISDbits.TRISD5
 #define MS_60 0x927C 
 #define US_10 0x000F
+#define ADC2CM 0.0161
+#define LIMIT 300
 
 //typedefs
 
@@ -47,6 +56,8 @@ PING_STATES currentState;
 unsigned int callTime;
 unsigned int responseTime;
 unsigned int timeOfFlight;
+unsigned int prev_timeOfFlight = 0;
+unsigned int distance; 
 
 //*           The timer peripheral is used to create the required trigger pulses. To do so you will need to modify when
 // *          the next interrupt occurs by modifying the PR4 register to create the periodic pulse.
@@ -116,10 +127,18 @@ void __ISR(_TIMER_4_VECTOR) Timer4IntHandler(void) {
 }
 
 unsigned int PING_GetDistance(void) {
+    unsigned int temp = PING_GetTimeofFlight();
+    distance = temp * ADC2CM;
+    return distance;
     //function model to convert TOF to distance goes here
 }
 
 unsigned int PING_GetTimeofFlight(void) {
     timeOfFlight = responseTime - callTime;
+    if(abs(timeOfFlight - prev_timeOfFlight)<LIMIT){
+        prev_timeOfFlight = timeOfFlight;
+    }else{
+        timeOfFlight = prev_timeOfFlight;
+    }
     return timeOfFlight;
 }
