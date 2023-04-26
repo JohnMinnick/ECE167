@@ -21,15 +21,17 @@ int main(void) {
     CAPTOUCH_Init();
 
     printf("\n Starting CAPTOUCH Test \n");
-    
+
     while (1) {
-        for(int i = 0; i < 10000; i++){
-            
+        for (int i = 0; i < 10000; i++) {
+
         }
+
+
         bool_cap = CAPTOUCH_IsTouched(); // rcheck moving avg for touch 
-        if(bool_cap == TRUE){
+        if (bool_cap == TRUE) {
             printf("\n TOUCH \n");
-        }else{
+        } else {
             printf("\n NO TOUCH \n");
         }
     }
