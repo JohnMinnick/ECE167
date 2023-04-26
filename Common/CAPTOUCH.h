@@ -78,4 +78,7 @@ char CAPTOUCH_Init(void);
  */
 char CAPTOUCH_IsTouched(void);
 
+
+
+
 #endif  /* CAPTOUCH_H */

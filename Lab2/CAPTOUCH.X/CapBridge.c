@@ -21,9 +21,10 @@ int main(void) {
     while(1){
          for (int i = 0; i < 183000; i++) {}
          printer = AD_ReadADPin(AD_A1);
-         if(printer < 500){
+         //printf("\n %d \n", printer);
+         if(printer < 100){
              printf("\n No Touch \n");
-         }else if(printer > 500){
+         }else if(printer > 100){
              printf("\n Yes Touch \n");
          }
         
