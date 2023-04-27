@@ -11,7 +11,7 @@
 #include <CAPTOUCH.h>
 #include <stdio.h>
 
-#define CAP_TOUCH_LIMIT 5000 // need to dial in this value
+#define CAP_TOUCH_LIMIT 12000 // need to dial in this value
 #define BUFFERLENGTH 16 // for moving average 
 
 
@@ -96,7 +96,9 @@ void __ISR(_INPUT_CAPTURE_4_VECTOR) InputCapture_Handler(void) {
     }
 }
 
-
+int returnAVG(void){
+    return avg;
+}
 
 // NOTE : this moving average code is modified from https://gist.github.com/bmccormack/d12f4bf0c96423d03f82 with the help of chatGPT
 // THIS IS NOT MY OWN ORGINAL WORK, it is my own modification upon moving average code 

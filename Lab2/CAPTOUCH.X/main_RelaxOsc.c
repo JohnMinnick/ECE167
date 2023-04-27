@@ -26,7 +26,8 @@ int main(void) {
         for (int i = 0; i < 10000; i++) {
 
         }
-
+//        bool_cap = returnAVG();
+//        printf("\n %d \n", bool_cap);
 
         bool_cap = CAPTOUCH_IsTouched(); // rcheck moving avg for touch 
         if (bool_cap == TRUE) {
