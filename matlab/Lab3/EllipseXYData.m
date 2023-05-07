@@ -302,3 +302,20 @@ Ymeas = [-2.2060
    -0.6457
     1.7754
    -0.3000];
+
+x = Xmeas;
+y = Ymeas;
+
+neg_x_sqr = -x.^2;
+
+A = [-2*x y.^2 -2*y, ones(size(Xmeas))];
+
+z = A\neg_x_sqr
+
+%vvv vals post calc vvv
+
+x_nought = 0.3962
+y_nought = -0.03386
+a = 1.106
+b = 2.1452
+
