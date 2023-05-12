@@ -7,9 +7,9 @@ function [Anoise,Hnoise,Adist,Bdist] = CreateTumbleData(npts)
 % This is based on the sensor output of 16-bits, where the sensors are set
 % to 2g for accel, and 16-bits on Mags. 
 
-DistScale = 0.2;                    % distortion scaling of sensor (in %)
-BiasScale = 0.5;                    % bias offset of sensor (in %)
-NoiseScale = 0.05;                  % noise scaling (in %)
+DistScale = 0.1;                    % distortion scaling of sensor (in %)
+BiasScale = 0.2;                    % bias offset of sensor (in %)
+NoiseScale = 0.02;                  % noise scaling (in %)
 Xcouple = 1/5;                      % cross coupling distortion relative
 AscaleFactor = 0.5*(2^15-1);        % conversion of g's to bits
 HscaleFactor = 1/0.15;              % uT/bits
